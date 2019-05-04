@@ -11,17 +11,16 @@ class MsdetoursConan(ConanFile):
     topics = ("detour", "hook", "api hook")
     settings = "build_type", "arch"
     generators = "visual_studio"
-    exports_sources = "src/*"
-    exports = ["system.mak", "Makefile"]
+
+    def source(self):
+        git = tools.Git()
+        git.clone("https://github.com/Microsoft/Detours.git")
 
     def build(self):
         env_build = VisualStudioBuildEnvironment(self)
         with tools.environment_append(env_build.vars):
             vcvars = tools.vcvars_command(self.settings)
-            if self.options.build_samples is False:
-                self.run('%s && cd src && nmake && cd ..' % vcvars)
-            else:
-                self.run('%s && nmake' % vcvars)
+            self.run('%s && cd src && nmake && cd ..' % vcvars)
 
     def package(self):
         self.copy("*.h", dst="include", src="src")
