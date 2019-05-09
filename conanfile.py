@@ -30,4 +30,4 @@ class MsdetoursConan(ConanFile):
             self.copy("*.lib", dst="lib", keep_path=False, src="lib.X64")
 
     def package_info(self):
-        self.cpp_info.libs = ["ms-detours"]
+        self.cpp_info.libs = ["detours"]
